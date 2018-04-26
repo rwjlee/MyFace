@@ -1,0 +1,14 @@
+{% extends 'user_info/base.html' %}
+
+{% block body %}
+
+<div class="jumbotron jumbotron-fluid register-bg">
+        <div class="container">
+        <h1 class="display-4 text-center"> Register and Create a new account...</h1>
+
+{% include 'user_info/registerform.html' %}
+
+{% include 'user_info/errors.html' %}
+</div>
+
+{% endblock %}

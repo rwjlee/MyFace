@@ -1,0 +1,27 @@
+{% extends 'user_info/base.html' %} 
+
+{% block body %}
+
+{% if results %}
+<h1>Results ... </h1>
+<div class="container">
+    {% for result in results %}
+    <div class="row border col-8">
+        <div class="col-4">
+            {{result.username}}
+        </div>
+        <div class="col-4">
+            {{ result.email }}
+        </div>
+        <a href="{% url 'user_info:following_page' %}" class="btn btn-primary">Follow</a>
+    </div>
+        
+    {% endfor %}
+</div>
+
+{% else %}
+<h1>No Results</h1>
+
+{% endif %}
+
+{% endblock %}

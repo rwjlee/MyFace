@@ -1,0 +1,15 @@
+{% extends 'user_info/base.html' %}
+
+{% block body %}
+
+<div class="jumbotron jumbotron-fluid login-bg">
+        <div class="container">
+        <h1 class="display-4 text-center"> Login ...</h1>
+
+{% include 'user_info/loginform.html' %}
+
+{% include 'user_info/errors.html' %}
+
+</div>
+
+{% endblock %}
