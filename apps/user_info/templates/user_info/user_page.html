@@ -1,0 +1,45 @@
+{% extends 'user_info/base.html' %}
+
+{% block body %}
+
+
+{% if request.session.user_id == user_id %}
+<div class="container">
+
+<form action="{% url 'user_info:add_post' %}" method="POST" class="my-2">
+    {% csrf_token %}
+    <div class="form-group">
+        <label>Posting Something ... </label>
+        <textarea class="form-control" rows="3" name="html_content">Post it</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Post it</button>
+</form>
+
+<hr>
+{% endif %}
+
+<div class="container">
+{% for post in posts %}
+    <div class="border">
+        <div>{{post.user.username}}</div>
+        <div class="">{{post.content}}</div>
+        <hr>
+        <div class="row">
+            <a href="{% url 'user_info:delete_post' post_id=post.id %}">delete</a>
+            <div>{{post.created_at}}</div>
+        </div>
+        <hr>
+        <form action="" method="POST" class="my-2">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea class="form-control" rows="2" name="html_comment"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Commnet</button>
+        </form>
+        
+      </div>
+{% endfor %}
+</div>
+
+</div>
+{% endblock %}

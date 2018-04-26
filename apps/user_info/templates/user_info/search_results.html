@@ -8,12 +8,15 @@
     {% for result in results %}
     <div class="row border col-8">
         <div class="col-4">
+            <a href="{% url 'user_info:user_page' user_id=result.id %}">
             {{result.username}}
+            </a>
         </div>
         <div class="col-4">
-            {{ result.email }}
+            {{result.email }}
         </div>
-        <a href="{% url 'user_info:following_page' %}" class="btn btn-primary">Follow</a>
+
+        <a href="{% url 'user_info:add_follow' following_id=result.id %}" class="btn btn-primary">Follow</a>
     </div>
         
     {% endfor %}

@@ -14,3 +14,21 @@ class Follow(models.Model):
     follower = models.ForeignKey(User, related_name='is_followings', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('following', 'follower')
+
+class Post(models.Model):
+    user = models.ForeignKey(User, related_name='has_posts', on_delete=models.CASCADE)
+    content = models.TextField(null=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, related_name='has_comments', on_delete=models.CASCADE)
+    content = models.TextField(null=False)
+    post = models.ForeignKey(Post, related_name='has_comments', on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

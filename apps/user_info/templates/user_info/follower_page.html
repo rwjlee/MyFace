@@ -2,25 +2,25 @@
 
 {% block body %}
 
-{% if followings %}
-<h1>You are following ... </h1>
+{% if followers %}
+<h1>You have followers ... </h1>
 <div class="container">
-    {% for following in followings %}
+    {% for follower in followers %}
     <div class="row border col-8">
         <div class="col-4">
-            {{following.following.username}}
+            {{follower.follower.username}}
         </div>
         <div class="col-4">
 
         </div>
-        <a href="{% url 'user_info:delete_follow' follow_id=following.id %}" class="btn btn-primary">Unfollow</a>
+        <a href="" class="btn btn-primary">Go to their page</a>
     </div>
         
     {% endfor %}
 </div>
 
 {% else %}
-<h1>No Results</h1>
+<h1>No Followers</h1>
 
 {% endif %}
 {% endblock %}

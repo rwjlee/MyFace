@@ -20,7 +20,7 @@
                     {{ request.session.username }}
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="">Edit Profile</a>
+                    <a class="dropdown-item" href="{% url 'user_info:user_page' user_id=request.session.user_id %}">Edit Profile</a>
                     <a class="dropdown-item" href="{% url 'user_info:logout' %}">Logout</a>
                   </div>
               
