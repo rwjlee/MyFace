@@ -8,12 +8,12 @@
     {% for follower in followers %}
     <div class="row border col-8">
         <div class="col-4">
+            <a href="{% url 'user_info:user_page' user_id=follower.follower.id %}">
             {{follower.follower.username}}
+            </a>
         </div>
-        <div class="col-4">
 
-        </div>
-        <a href="" class="btn btn-primary">Go to their page</a>
+        <a href="">Unfollow</a>
     </div>
         
     {% endfor %}

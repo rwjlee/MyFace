@@ -12,15 +12,15 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('search', views.search, name='search'),
     path('search_results/<str:term>', views.search_results, name='search_results'),
-    path('following_page', views.following_page, name='following_page'),
+    path('user_page/<int:user_id>/following_page', views.following_page, name='following_page'),
     path('add_follow/<int:following_id>', views.add_follow, name = 'add_follow'),
-    path('follower_page', views.follower_page, name='follower_page'),
+    path('user_page/<int:user_id>/follower_page', views.follower_page, name='follower_page'),
     path('delete_follow/<int:follow_id>', views.delete_follow, name = 'delete_follow'),
     path('user_page/<int:user_id>', views.user_page, name='user_page'),
     path('add_post', views.add_post, name='add_post'),
     path('delete_post/<int:post_id>', views.delete_post, name = 'delete_post'),
     path('add_comment', views.add_comment, name='add_comment'),
-    path('photo_page/<int:user_id>', views.photo_page, name='photo_page'),
+    path('user_page/<int:user_id>/photo_page', views.photo_page, name='photo_page'),
     path('add_photo', views.add_photo, name='add_photo'),
 ]
 

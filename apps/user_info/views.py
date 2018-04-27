@@ -49,11 +49,8 @@ def delete_follow(request, follow_id):
     
     return redirect('user_info:following_page')
 
-def follower_page(request):
-    if 'user_id' not in request.session:
-        return redirect('user_info:login')
+def follower_page(request, user_id):
 
-    user_id = request.session['user_id']
     followers = m.Follow.objects.filter(following_id = user_id).order_by('follower__username')
 
     context = {
@@ -62,12 +59,12 @@ def follower_page(request):
 
     return render(request, 'user_info/follower_page.html', context)
 
-def following_page(request):
-    if 'user_id' not in request.session:
-        return redirect('user_info:login')
+def following_page(request, user_id):
 
-    user_id = request.session['user_id']
-    followings = m.Follow.objects.filter(follower_id = user_id).order_by('following__username')
+    try :
+        followings = m.Follow.objects.filter(follower_id = user_id).order_by('following__username')
+    except:
+        followings = None
 
     context = {
         'followings': followings

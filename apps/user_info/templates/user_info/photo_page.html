@@ -8,8 +8,8 @@
     <ul>
         <li class="active nav-item">{{user.username}}</li>
         <img class="img-rounded profile-pic" src="{{profile.img_file.url}}" alt="">
-        <li><a href="">Follower</a></li>
-        <li><a href="">Following</a></li>
+        <li><a href="{% url 'user_info:follower_page' user_id=user.id %}">Follower</a></li>
+        <li><a href="{% url 'user_info:following_page' user_id=user.id %}">Following</a></li>
         <li><a href="{% url 'user_info:photo_page' user_id=user.id %}">Photos</a></li>
     </ul>
 </nav>
@@ -30,6 +30,13 @@
         <button class="btn btn-primary" type="submit">Upload</button>
     </form>
 
+    <hr>
+
+    {% else %}
+
+    <div>
+        User Photos:
+    </div>
     <hr>
     
     {% endif %}
