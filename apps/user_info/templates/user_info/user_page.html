@@ -2,44 +2,100 @@
 
 {% block body %}
 
+<div class="wrapper">
+    <nav id="sidebar">
+        <ul>
+            <li class="active nav-item">{{user.username}}</li>
+            <li><a href="">Follower</a></li>
+            <li><a href="">Following</a></li>
+            <li><a href="{% url 'user_info:photo_page' user_id=user.id %}">Photos</a></li>
+        </ul>
+    </nav>
 
-{% if request.session.user_id == user_id %}
-<div class="container">
+<div class="container pr-5">
+{% if request.session.user_id %}
+    {% if request.session.user_id == user.id %}
 
-<form action="{% url 'user_info:add_post' %}" method="POST" class="my-2">
-    {% csrf_token %}
-    <div class="form-group">
-        <label>Posting Something ... </label>
-        <textarea class="form-control" rows="3" name="html_content">Post it</textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Post it</button>
-</form>
+    <form action="{% url 'user_info:add_post' %}" method="POST" class="my-2">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Posting Something ... </label>
+            <textarea class="form-control" rows="3" name="html_content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Post it</button>
+    </form>
 
-<hr>
+    <hr>
+    {% else %}
+    <form action="{% url 'user_info:add_post' %}" method="POST" class="my-2">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Post Something to {{user.username}}... </label>
+            <input type="hidden" name="html_target" value="{{user.id}}">
+            <textarea class="form-control" rows="3" name="html_content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Post it</button>
+    </form>
+
+    <hr>
+    {% endif %}
+
 {% endif %}
+
 
 <div class="container">
 {% for post in posts %}
-    <div class="border">
-        <div>{{post.user.username}}</div>
-        <div class="">{{post.content}}</div>
-        <hr>
-        <div class="row">
-            <a href="{% url 'user_info:delete_post' post_id=post.id %}">delete</a>
-            <div>{{post.created_at}}</div>
+    <div class="rounded col-8 bg-secondary my-3">
+        <div class="bg-info">
+        {% if post.target_user %}
+            {{post.user.username}} > {{post.target_user.username}}
+
+        {% else %}
+            {{post.user.username}}
+        
+        {% endif %}
         </div>
-        <hr>
-        <form action="" method="POST" class="my-2">
+
+        <div class="font-weight-bold lead">{{post.content}}</div>
+
+
+        <div class="row border border-dark border-top border-right-0 border-left-0 small">
+            {% if post.user.id == request.session.user_id %}
+            <a class="text-danger text-left col-6" href="{% url 'user_info:delete_post' post_id=post.id %}">delete</a>
+            <div class="col-6 text-right">{{post.updated_at}}</div>
+            {% else %}
+            <div class="col-12 text-right">{{post.updated_at}}</div>
+            {% endif %}
+        </div>
+
+        {% for comment in post.has_comments.all %}
+        <div>
+            <div>
+                {{comment.content}}
+            </div>
+
+            <div>
+                by {{comment.user.username}} at {{comment.created_at}}
+            </div>
+        </div>
+        
+
+        {% empty %}
+
+        {% endfor %}
+        <form action="{% url 'user_info:add_comment' %}" method="POST" class="my-2">
             {% csrf_token %}
             <div class="form-group">
-                <textarea class="form-control" rows="2" name="html_comment"></textarea>
+                <input type="hidden" name="html_post" value="{{post.id}}">
+                <input type="text" class="form-control" rows="1" name="html_comment">
             </div>
-            <button type="submit" class="btn btn-primary">Commnet</button>
+            <button type="submit" class="btn btn-primary">Comment</button>
         </form>
         
       </div>
 {% endfor %}
 </div>
 
+</div>
 </div>
 {% endblock %}

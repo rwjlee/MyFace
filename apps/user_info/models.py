@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
@@ -20,6 +21,7 @@ class Follow(models.Model):
 
 class Post(models.Model):
     user = models.ForeignKey(User, related_name='has_posts', on_delete=models.CASCADE)
+    target_user = models.ForeignKey(User, related_name='got_messages', on_delete=models.CASCADE, null=True)
     content = models.TextField(null=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -32,3 +34,10 @@ class Comment(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class Photo(models.Model):
+    title = models.CharField(max_length=128, null=True)
+    user = models.ForeignKey(User, related_name = 'has_photos', on_delete=models.CASCADE, null=True)
+    img_file = models.ImageField(upload_to='media/%Y/%m')
+    profile_pic = models.IntegerField(null=True)
+    

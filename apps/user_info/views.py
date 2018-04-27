@@ -54,7 +54,7 @@ def follower_page(request):
         return redirect('user_info:login')
 
     user_id = request.session['user_id']
-    followers = m.Follow.objects.filter(following_id = user_id)
+    followers = m.Follow.objects.filter(following_id = user_id).order_by('follower__username')
 
     context = {
         'followers': followers
@@ -67,32 +67,41 @@ def following_page(request):
         return redirect('user_info:login')
 
     user_id = request.session['user_id']
-    followings = m.Follow.objects.filter(follower_id = user_id)
+    followings = m.Follow.objects.filter(follower_id = user_id).order_by('following__username')
 
     context = {
         'followings': followings
     }
 
-    print(type(followings))
-    print(followings[0])
-
     return render(request, 'user_info/following_page.html', context)
 
 def user_page(request, user_id):
-    posts = m.Post.objects.filter(user_id = user_id)
+    posts = m.Post.objects.filter(Q(user_id = user_id) | Q(target_user_id=user_id)).order_by('-updated_at')
+
+    try:
+        user = m.User.objects.get(id = user_id)
+    except:
+        user = None
+        return redirect('user_info:index')
+
     context = {
         'posts': posts,
-        'user_id': user_id
+        'user': user
     }
+
     return render(request, 'user_info/user_page.html', context)
 
 def add_post(request):
     if request.method == 'POST':
         html_content = request.POST['html_content']
         html_user = request.session['user_id']
+        try:
+            html_target = request.POST['html_target']
+        except:
+            html_target = None
 
         if len(html_content) > 0:
-            post = m.Post.objects.create(user_id = html_user, content = html_content)
+            post = m.Post.objects.create(user_id = html_user, content = html_content, target_user_id = html_target)
 
     return redirect('user_info:index')
     
@@ -100,7 +109,64 @@ def delete_post(request, post_id):
     post = m.Post.objects.get(id = post_id)
     post.delete()
     return redirect('user_info:index')
+
+def add_comment(request):
+    if request.method == 'POST':
+
+        html_comment = request.POST['html_comment']
+        html_user = request.session['user_id']
+        html_post = request.POST['html_post']
+
+        print("{} +++ {} +++ {}".format(html_comment, html_user, html_post))
+
+        if len(html_comment) > 0:
+            comment = m.Comment.objects.create(user_id = html_user, content = html_comment, post_id = html_post)
+            post = m.Post.objects.get(id = html_post)
+            post.save()
+
+    return redirect('user_info:index')
+
+def add_photo(request):
     
+    if request.method == 'POST':
+        html_file = request.FILES['html_file']
+        html_title = request.POST['html_title']
+        html_user = request.POST['html_user']
+
+        photo = m.Photo.objects.create(img_file = html_file, title = html_title, user_id = html_user )
+        return redirect('user_info:photo_page', user_id = html_user)
+
+    return redirect('user_info:index')
+
+def add_profile_pic(request):
+    return redirect('user_info:index')
+
+def remove_profile_pic(request):
+    return redirect('user_info:index')
+
+def photo_page(request, user_id):
+
+    try:
+        photos = m.Photo.objects.filter(user_id = user_id)
+    except:
+        photos = None
+
+    try:
+        profile = m.Photo.objects.get(Q(user_id=user_id) & Q(profile_pic=1))
+    except:
+        profile = None
+
+    print(profile)
+
+    context = {
+        'user': m.User.objects.get(id=user_id),
+        'photos': photos,
+        'profile': profile,
+    }
+
+    return render(request, 'user_info/photo_page.html', context)
+
+
 def login(request):
     if request.method == 'POST':
         html_email = request.POST['html_email']

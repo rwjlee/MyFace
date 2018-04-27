@@ -9,40 +9,52 @@
     height: 100vh;
 }
 
-.leftbar {
-    text-align: left;
+.wrapper {
+    display: flex;
 }
+
+.content {
+    display: flex;
+}
+
+.profile-pic {
+    width: 125px;
+    height: 125px;
+}
+
+.show-photo {
+    width: 150px;
+    height: 150px;
+}
+
+#sidebar {
+    min-width: 150px;
+    max-width: 250px;
+    height: 100vh;
+}
+
+#sidebar ul li {
+    padding: 5px;
+    list-style: none;
+    text-align: right;
+}
+
+#side.active {
+    margin-left: -150px;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -150px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
+
 
 .formcolor {
     background-color: white;
-}
-
-.plane-bg {
-    background-image: url('https://picsum.photos/1997/1000');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-}
-
-.train-bg {
-    background-image: url('https://picsum.photos/1996/1001');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-}
-
-.automobile-bg {
-    background-image: url('https://picsum.photos/1996/1000');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-}
-
-.boat-bg {
-    background-image: url('https://picsum.photos/2001/1000');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
 }
 
 .register-bg {

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'user_info'
 
@@ -16,5 +18,11 @@ urlpatterns = [
     path('delete_follow/<int:follow_id>', views.delete_follow, name = 'delete_follow'),
     path('user_page/<int:user_id>', views.user_page, name='user_page'),
     path('add_post', views.add_post, name='add_post'),
-    path('delete_post/<int:post_id>', views.delete_post, name = 'delete_post')
+    path('delete_post/<int:post_id>', views.delete_post, name = 'delete_post'),
+    path('add_comment', views.add_comment, name='add_comment'),
+    path('photo_page/<int:user_id>', views.photo_page, name='photo_page'),
+    path('add_photo', views.add_photo, name='add_photo'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

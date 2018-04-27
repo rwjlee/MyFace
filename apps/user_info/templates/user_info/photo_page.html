@@ -1,0 +1,53 @@
+{% extends 'user_info/base.html' %}
+
+{% block body %}
+
+<div class="wrapper row">
+
+<nav id="sidebar" class='col-2'>
+    <ul>
+        <li class="active nav-item">{{user.username}}</li>
+        <img class="img-rounded profile-pic" src="{{profile.img_file.url}}" alt="">
+        <li><a href="">Follower</a></li>
+        <li><a href="">Following</a></li>
+        <li><a href="{% url 'user_info:photo_page' user_id=user.id %}">Photos</a></li>
+    </ul>
+</nav>
+
+<div class="col-8">
+{% if request.session.user_id %}
+    {% if request.session.user_id == user.id %}
+
+    <form action="{% url 'user_info:add_photo' %}" enctype="multipart/form-data" method="POST" class="my-2">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+          <input type="file" class="form-control" placeholder="" aria-label="" name="html_file" aria-describedby="basic-addon1">
+        </div>
+        <div>
+            <input type="text" class="form-control" name="html_title">
+            <input type="hidden" name="html_user" value="{{user.id}}">
+        </div>
+        <button class="btn btn-primary" type="submit">Upload</button>
+    </form>
+
+    <hr>
+    
+    {% endif %}
+
+    <div class="row">
+        {% for photo in photos %}
+        <div class="col-3">
+            <img class="img-rounded show-photo" src="{{photo.img_file.url}}" alt="">
+            <div class="small">
+                {{photo.title}}
+            </div>
+        </div>
+        
+        {% endfor %}
+    </div>
+
+{% endif %}
+</div>
+
+</div>
+{% endblock %}
